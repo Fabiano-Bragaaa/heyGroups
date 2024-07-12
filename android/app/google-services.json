@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "778411293172",
+    "project_id": "heygroups-1a8e4",
+    "storage_bucket": "heygroups-1a8e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778411293172:android:7c0f1607ea468f323421a1",
+        "android_client_info": {
+          "package_name": "com.heygroups"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAy_xh8lLPArN4BCNHbMpioEWA6UhQXcrE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
