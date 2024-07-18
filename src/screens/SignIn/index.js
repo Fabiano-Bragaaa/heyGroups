@@ -10,7 +10,7 @@ import {
   ButtonTitle,
   ButtonLogin,
 } from './sytles';
-import {TouchableOpacity} from 'react-native';
+import {ActivityIndicator, Alert, TouchableOpacity} from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 
@@ -19,6 +19,7 @@ import {useNavigation} from '@react-navigation/native';
 export function SignIn() {
   const navigation = useNavigation();
 
+  const [loadingAuth, setLoadingAuth] = useState(false);
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,6 +37,8 @@ export function SignIn() {
       return;
     }
 
+    setLoadingAuth(true);
+
     auth()
       .createUserWithEmailAndPassword(email, password)
       .then(user => {
@@ -44,6 +47,8 @@ export function SignIn() {
             displayName: nome,
           })
           .then(() => {
+            setLoadingAuth(false);
+
             navigation.goBack();
           })
           .catch(err => {
@@ -51,6 +56,8 @@ export function SignIn() {
           });
       })
       .catch(err => {
+        setLoadingAuth(false);
+
         console.log(err);
       });
   }
@@ -59,12 +66,19 @@ export function SignIn() {
     if (email === '' || password === '') {
       return;
     }
+    setLoadingAuth(true);
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
+        setLoadingAuth(false);
         navigation.goBack();
       })
       .catch(err => {
+        Alert.alert(
+          'Email e/ou senha incorretas.',
+          'Verifique os dados e tente novamente!',
+        );
+        setLoadingAuth(false);
         console.log(err);
       });
   }
@@ -99,8 +113,13 @@ export function SignIn() {
           />
 
           <ButtonLogin onPress={handleSignUp}>
-            <ButtonTitle>Cadastrar</ButtonTitle>
+            {loadingAuth ? (
+              <ActivityIndicator size={20} color="#fff" />
+            ) : (
+              <ButtonTitle>Cadastrar</ButtonTitle>
+            )}
           </ButtonLogin>
+
           <TouchableOpacity onPress={toggleLogin}>
             <SubTitle>Já possuo uma conta</SubTitle>
           </TouchableOpacity>
@@ -132,7 +151,11 @@ export function SignIn() {
         />
 
         <ButtonLogin onPress={handleSignIn}>
-          <ButtonTitle>Acessar</ButtonTitle>
+          {loadingAuth ? (
+            <ActivityIndicator size={20} color="#fff" />
+          ) : (
+            <ButtonTitle>Acessar</ButtonTitle>
+          )}
         </ButtonLogin>
         <TouchableOpacity onPress={toggleLogin}>
           <SubTitle>Criar uma nova conta</SubTitle>
